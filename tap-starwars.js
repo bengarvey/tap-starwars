@@ -10,27 +10,59 @@ function StarWars() {
     }
   };
 
-  var schema = {
-    "type": "SCHEMA",
-    "stream": "people",
-    "key_properties": ["name"],
-    "schema": {
-      "type": "object",
-      "properties": {
-        "name": {"type":"string"},
-        "height": {"type":"string"},
-        "mass": {"type":"string"},
-        "hair_color": {"type":"string"},
-        "skin_color": {"type":"string"},
-        "eye_color": {"type":"string"},
-        "gender": {"type":"string"},
-        "homeworld": {"type":"string"},
-        "created": {"type":"string", "format": "date-time"},
-        "edited": {"type":"string", "format": "date-time"},
-        "url": {"type":"string"}
+  var schema = {};
+
+  function getSchema(rec, id) {
+    var schema = {
+      "type": "SCHEMA",
+      "stream": "people",
+      "key_properties": [id],
+      "schema": {
+        "type": "object",
+        "properties": inferSchema(rec)
       }
     }
-  };
+    return schema;
+  }
+
+  function printSchema(rec) {
+    var schema = getSchema(rec);
+    console.log(JSON.stringify(schema));
+    return schema;
+  }
+
+  function inferSchema(rec) {
+    var keys = Object.keys(rec);
+    var properties = {};
+    keys.forEach( function(key) {
+      properties[key] = inferDatatype(key);
+    });
+    return properties;
+  }
+
+  function isDate(name) {
+    var dates = ['created', 'edited', 'created_at', 'updated_at'];
+    return dates.indexOf(name) > -1;
+  }
+
+  function isCollection(name) {
+    var collections = ['planets', 'films', 'species', 'vehicles', 'starships'];
+    return collections.indexOf(name) > -1;
+  }
+
+  function inferDatatype(name) {
+    var type = "";
+    if (isDate(name)) {
+      type = {"type":"string", "format":"date-time"}
+    }
+    if (isCollection(name)) {
+      type = {"type":"array","items":{"type":"string"}};
+    }
+    else {
+      type = {"type":"string"};
+    }
+    return type;
+  }
 
   function getRecord(rec) {
     return {
@@ -62,6 +94,9 @@ function StarWars() {
 
         var records = JSON.parse(response).results;
         var more = JSON.parse(response).next != null;
+        if (page == 1 && records.length > 0) {
+          schema = printSchema(records[0]);
+        }
         records.forEach( function(rec) {
           console.log(JSON.stringify(getRecord(convertRec(rec, schema))));
         });
@@ -83,7 +118,6 @@ function StarWars() {
   var pd = {};
 
   pd.getPeople = function() {
-    console.log(JSON.stringify(schema));
     requestData(1);
   }
 
