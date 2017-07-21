@@ -1,10 +1,8 @@
 
 function StarWars() {
   var https = require('https');
-  var tu2 = require('taputils');
-  var tu = new tu2();
-
-  console.log(tu);
+  var tutils = require('taputils');
+  var tu = new tutils();
 
   var options = {
     host: 'swapi.co',
@@ -18,78 +16,6 @@ function StarWars() {
   var schema = {};
   const PK = 'name';
   const STREAM = 'people';
-
-  /*
-  function getSchema(rec, id) {
-    var schema = {
-      "type": "SCHEMA",
-      "stream": "people",
-      "key_properties": [id],
-      "schema": {
-        "type": "object",
-        "properties": inferSchema(rec)
-      }
-    }
-    return schema;
-  }
-
-  function printSchema(rec, name, id) {
-    var schema = getSchema(rec, PK);
-    console.log(JSON.stringify(schema));
-    return schema;
-  }
-
-  function inferSchema(rec) {
-    var keys = Object.keys(rec);
-    var properties = {};
-    keys.forEach( function(key) {
-      properties[key] = inferDatatype(key);
-    });
-    return properties;
-  }
-
-  function isDate(name) {
-    var dates = ['created', 'edited', 'created_at', 'updated_at'];
-    return dates.indexOf(name) > -1;
-  }
-
-  function isCollection(name) {
-    var collections = ['planets', 'films', 'species', 'vehicles', 'starships'];
-    return collections.indexOf(name) > -1;
-  }
-
-  function inferDatatype(name) {
-    var type = "";
-    if (isDate(name)) {
-      type = {"type":"string", "format":"date-time"}
-    }
-    if (isCollection(name)) {
-      type = {"type":"array","items":{"type":"string"}};
-    }
-    else {
-      type = {"type":"string"};
-    }
-    return type;
-  }
-
-  function getRecord(rec) {
-    return {
-      type: "RECORD",
-      stream: "people",
-      record: rec
-    };
-  }
-
-  function convertRec(rec, schema) {
-    var keys = Object.keys(schema.schema.properties);
-    var record = {};
-    keys.forEach( function(key) {
-      record[key] = rec[key];
-    });
-    return record;
-  }
-
-  */
 
   function requestData(page) {
     options.path = `/api/people/?page=${page}`;
