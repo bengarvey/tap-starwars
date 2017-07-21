@@ -1,5 +1,10 @@
+
 function StarWars() {
   var https = require('https');
+  var tu2 = require('taputils');
+  var tu = new tu2();
+
+  console.log(tu);
 
   var options = {
     host: 'swapi.co',
@@ -12,7 +17,9 @@ function StarWars() {
 
   var schema = {};
   const PK = 'name';
+  const STREAM = 'people';
 
+  /*
   function getSchema(rec, id) {
     var schema = {
       "type": "SCHEMA",
@@ -26,7 +33,7 @@ function StarWars() {
     return schema;
   }
 
-  function printSchema(rec) {
+  function printSchema(rec, name, id) {
     var schema = getSchema(rec, PK);
     console.log(JSON.stringify(schema));
     return schema;
@@ -82,6 +89,8 @@ function StarWars() {
     return record;
   }
 
+  */
+
   function requestData(page) {
     options.path = `/api/people/?page=${page}`;
     var req = https.request(options, function(res) {
@@ -96,10 +105,10 @@ function StarWars() {
         var records = JSON.parse(response).results;
         var more = JSON.parse(response).next != null;
         if (page == 1 && records.length > 0) {
-          schema = printSchema(records[0]);
+          schema = tu.printSchema(records[0], STREAM, PK);
         }
         records.forEach( function(rec) {
-          console.log(JSON.stringify(getRecord(convertRec(rec, schema))));
+          console.log(JSON.stringify(tu.getRecord(tu.convertRec(rec, schema))));
         });
 
         if (more) {

@@ -1,0 +1,15 @@
+{
+  "name": "taputils",
+  "version": "1.0.0",
+  "description": "Utility functions for singer.io",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bengarvey/TapUtils.git"
+  },
+  "author": "Ben Garvey ben@bengarvey.com",
+  "license": "MIT"
+}
