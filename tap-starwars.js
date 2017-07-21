@@ -11,6 +11,7 @@ function StarWars() {
   };
 
   var schema = {};
+  const PK = 'name';
 
   function getSchema(rec, id) {
     var schema = {
@@ -26,7 +27,7 @@ function StarWars() {
   }
 
   function printSchema(rec) {
-    var schema = getSchema(rec);
+    var schema = getSchema(rec, PK);
     console.log(JSON.stringify(schema));
     return schema;
   }
