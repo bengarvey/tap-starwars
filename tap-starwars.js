@@ -4,6 +4,12 @@ function StarWars() {
   var tutils = require('taputils');
   var tu = new tutils();
 
+  var config = tu.getConfig();
+  config.stream = "people";
+  config.pk = "name";
+  config.collectionNames = ['films', 'species', 'vehicles', 'starships'];
+  tu.setConfig(config);
+
   var options = {
     host: 'swapi.co',
     port: 443,
@@ -14,8 +20,6 @@ function StarWars() {
   };
 
   var schema = {};
-  const PK = 'name';
-  const STREAM = 'people';
 
   function requestData(page) {
     options.path = `/api/people/?page=${page}`;
@@ -31,10 +35,10 @@ function StarWars() {
         var records = JSON.parse(response).results;
         var more = JSON.parse(response).next != null;
         if (page == 1 && records.length > 0) {
-          schema = tu.printSchema(records[0], STREAM, PK);
+          schema = tu.printSchema(records[0], config.stream, config.pk);
         }
         records.forEach( function(rec) {
-          console.log(JSON.stringify(tu.getRecord(tu.convertRec(rec, schema))));
+          console.log(JSON.stringify(tu.getRecord(tu.convertRec(rec, schema), "people")));
         });
 
         if (more) {
