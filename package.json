@@ -1,0 +1,23 @@
+{
+  "name": "tap-starwars",
+  "version": "1.0.0",
+  "description": "Star Wars singer.io tap",
+  "main": "tap-starwars.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run": "node tap-starwars.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bengarvey/tap-starwars.git"
+  },
+  "author": "Ben Garvey",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bengarvey/tap-starwars/issues"
+  },
+  "homepage": "https://github.com/bengarvey/tap-starwars#readme",
+  "dependencies": {
+    "taputils": "^3.1.1"
+  }
+}
